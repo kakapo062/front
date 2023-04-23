@@ -1,6 +1,6 @@
 import { useBooks } from '../hooks/useBooks';
 
-export default function Home() {
+const Home = () => {
   const [result] = useBooks();
   const { data, fetching, error } = result;
 
@@ -18,3 +18,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
