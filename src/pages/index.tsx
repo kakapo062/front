@@ -1,6 +1,7 @@
+import React from 'react';
 import { useBooks } from '../hooks/useBooks';
 
-const Home = () => {
+const Home: React.FC = () => {
   const [result] = useBooks();
   const { data, fetching, error } = result;
 
