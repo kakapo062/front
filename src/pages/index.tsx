@@ -1,6 +1,6 @@
-import React from 'react';
-import { useBooks } from '../hooks/useBooks';
-import { useState } from 'react';
+import React from "react";
+import { useBooks } from "../hooks/useBooks";
+import { useState } from "react";
 
 const Home: React.FC = () => {
   const [result] = useBooks();
@@ -9,14 +9,14 @@ const Home: React.FC = () => {
   // if (fetching) return <p>Loading...</p>;
   // if (error) return <p>Oops! Something went wrong.</p>;
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-  }
+  };
   const handleSearch = () => {
     // 検索処理をここに書く
-  }
+  };
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
         </div>
         <div>
           <button
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-emerald-600"
             onClick={handleSearch}
           >
             本を検索
@@ -52,6 +52,6 @@ const Home: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
