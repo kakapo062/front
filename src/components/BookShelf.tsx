@@ -1,7 +1,6 @@
 // components/BookShelf.tsx
-import React from 'react';
-import { useBooks } from "../hooks/useBooks";
-
+import React from "react";
+import Image from "next/image";
 interface Book {
   id: string;
   title: string;
@@ -13,23 +12,26 @@ interface BookShelfProps {
 }
 
 export const BookShelf: React.FC<BookShelfProps> = ({ books }) => {
-  const [result] = useBooks();
-  const { data, fetching, error } = result;
-
-  if (fetching) return <p>Loading...</p>;
-  if (error) return <p>Oops! Something went wrong.</p>;
-
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-2xl font-semibold mb-4">My Bookshelf</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data?.books.map((book) => (
-          <div key={book.id} className="flex flex-col">
-            {/* <img src={book.coverImage} alt={book.title} className="w-full h-48 object-cover rounded-md" /> */}
-            <p className="mt-2 text-sm text-center">{book.title}</p>
-          </div>
+    <div className="bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-semibold text-center py-6">My 本棚</h1>
+      <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+        {books.map((book) => (
+          <li
+            key={book.id}
+            className="rounded-lg shadow-md p-4 bg-white hover:bg-gray-200 transition-all duration-200 cursor-pointer"
+          >
+            <Image
+              src={book.coverImage}
+              alt={book.title}
+              className="object-cover object-center"
+              width={150}
+              height={200}
+            />
+            <p className="text-lg font-semibold">{book.title}</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
