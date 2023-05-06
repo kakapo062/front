@@ -12,7 +12,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center pt-12 bg-gray-100">
+    <div className="flex flex-col items-center pt-16">
       <div className="w-full max-w-md bg-white p-8 rounded shadow">
         <h1 className="text-2xl font-bold mb-8">ログイン</h1>
         <form onSubmit={handleSubmit}>
