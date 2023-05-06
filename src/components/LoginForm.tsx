@@ -1,14 +1,21 @@
-// components/LoginForm.tsx
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // ログイン処理をここで実行
+    signIn("credentials", {
+      email,
+      password,
+    });
+  };
+
+  const signInWithGoogle = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -52,7 +59,10 @@ const LoginForm: React.FC = () => {
           </button>
         </form>
         {/* Googleログインボタンの実装 */}
-        <button className="w-full bg-red-500 text-white font-semibold py-2 px-4 rounded mt-6 hover:bg-red-600 focus:outline-none focus:bg-red-600">
+        <button
+          className="w-full bg-red-500 text-white font-semibold py-2 px-4 rounded mt-6 hover:bg-red-600 focus:outline-none focus:bg-red-600"
+          onClick={signInWithGoogle}
+        >
           Googleアカウントでログイン
         </button>
         <p className="mt-4">

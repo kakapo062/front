@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { GiBookPile } from "react-icons/Gi";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
+  const { data: session } = useSession();
 
-  // 仮のユーザー情報を設定
-  useEffect(() => {
-    const loggedIn = Math.random() < 0.5; // ランダムなログイン状態を生成
-    setIsLoggedIn(loggedIn);
-    if (loggedIn) {
-      setUsername("うさまる");
-    }
-  }, []);
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <header className="bg-white fixed w-full top-0 z-100 p-4">
@@ -26,11 +21,20 @@ const Header = () => {
               <GiBookPile className="text-3xl text-gray-800" />
             </span>
           </Link>
-          {isLoggedIn ? (
+          {session && session.user ? (
             <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="text-lg font-semibold text-gray-800">
-                  {username}
+              <div className="flex items-center">
+                {session.user.image && (
+                  <Image
+                    src={session.user.image}
+                    alt="Profile"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                )}
+                <Menu.Button className="ml-2 text-sm font-semibold text-gray-800">
+                  {session.user.name || session.user.email}
                 </Menu.Button>
               </div>
               <Transition
@@ -60,6 +64,7 @@ const Header = () => {
                     <Menu.Item>
                       {({ active }) => (
                         <span
+                          onClick={handleSignOut}
                           className={`${
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -76,7 +81,7 @@ const Header = () => {
             </Menu>
           ) : (
             <Link href="/login">
-              <span className="text-lg font-semibold text-gray-800 cursor-pointer">
+              <span className="text-sm font-semibold p-2 rounded-md text-gray-800 cursor-pointer">
                 ログイン
               </span>
             </Link>
