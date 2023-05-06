@@ -11,7 +11,7 @@ const Home: React.FC = () => {
     // 検索処理をここに書く
   };
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-100 flex items-center px-4 pt-36 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <h1 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
           本を検索する
