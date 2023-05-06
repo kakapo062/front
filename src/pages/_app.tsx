@@ -1,8 +1,7 @@
 import { Provider, createClient, cacheExchange, fetchExchange } from "urql";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Layout from "@/components/Layout";
 
 const client = createClient({
   url: "http://localhost:3010/graphql",
@@ -12,9 +11,9 @@ const client = createClient({
 function App({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </Provider>
   );
 }
