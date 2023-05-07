@@ -3,14 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { GiBookPile } from "react-icons/Gi";
 import { Menu, Transition } from "@headlessui/react";
-import { useSession, signOut } from "next-auth/react";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import classNames from "classnames";
 
 const Header = () => {
-  const { data: session } = useSession();
+  const { user, error, isLoading } = useUser();
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
-  };
+  const UserProfileImage = () =>
+    user?.picture ? (
+      <Image
+        src={user.picture}
+        alt="Profile"
+        width={32}
+        height={32}
+        className="rounded-full"
+      />
+    ) : null;
 
   return (
     <header className="bg-white fixed w-full top-0 z-100 p-4">
@@ -21,20 +31,12 @@ const Header = () => {
               <GiBookPile className="text-3xl text-gray-800" />
             </span>
           </Link>
-          {session && session.user ? (
+          {user ? (
             <Menu as="div" className="relative inline-block text-left">
               <div className="flex items-center">
-                {session.user.image && (
-                  <Image
-                    src={session.user.image}
-                    alt="Profile"
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                )}
+                <UserProfileImage />
                 <Menu.Button className="ml-2 text-sm font-semibold text-gray-800">
-                  {session.user.name || session.user.email}
+                  {user.name || user.email}
                 </Menu.Button>
               </div>
               <Transition
@@ -51,11 +53,13 @@ const Header = () => {
                     <Menu.Item>
                       {({ active }) => (
                         <span
-                          className={`${
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700"
-                          } block px-4 py-2 text-sm cursor-pointer`}
+                          className={classNames(
+                            "block px-4 py-2 text-sm cursor-pointer",
+                            {
+                              "bg-gray-100 text-gray-900": active,
+                              "text-gray-700": !active,
+                            }
+                          )}
                         >
                           設定
                         </span>
@@ -63,16 +67,19 @@ const Header = () => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <span
-                          onClick={handleSignOut}
-                          className={`${
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700"
-                          } block px-4 py-2 text-sm cursor-pointer`}
-                        >
-                          ログアウト
-                        </span>
+                        <Link href="/api/auth/logout">
+                          <span
+                            className={classNames(
+                              "block px-4 py-2 text-sm cursor-pointer",
+                              {
+                                "bg-gray-100 text-gray-900": active,
+                                "text-gray-700": !active,
+                              }
+                            )}
+                          >
+                            ログアウト
+                          </span>
+                        </Link>
                       )}
                     </Menu.Item>
                   </div>
@@ -80,7 +87,7 @@ const Header = () => {
               </Transition>
             </Menu>
           ) : (
-            <Link href="/login">
+            <Link href="/api/auth/login">
               <span className="text-sm font-semibold p-2 rounded-md text-gray-800 cursor-pointer">
                 ログイン
               </span>
