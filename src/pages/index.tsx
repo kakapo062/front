@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
+import { debounce } from "lodash";
 import Image from "next/image";
 
 type Book = {
@@ -15,11 +16,7 @@ const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleSearch = async () => {
+  const searchBooks = async (searchTerm: string) => {
     try {
       const response = await axios.get(
         "https://www.googleapis.com/books/v1/volumes",
@@ -31,12 +28,19 @@ const Home: React.FC = () => {
         }
       );
       setBooks(response.data.items);
-      console.log(response.data.items["0"].volumeInfo.imageLinks.thumbnail);
     } catch (error) {
       console.error(error);
     }
   };
 
+  // debounceを使用して入力終了後すぐにAPIが叩かれないようにする
+  const debouncedSearchBooks = useRef(debounce(searchBooks, 300)).current;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    debouncedSearchBooks(term);
+  };
   return (
     <div className="bg-gray-100 flex items-center justify-center px-4 pt-36 pb-24 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -53,14 +57,6 @@ const Home: React.FC = () => {
               onChange={handleInputChange}
             />
           </div>
-        </div>
-        <div>
-          <button
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-500 hover:text-emerald-700 transition-all duration-200 focus:outline-none focus:ring-emerald-600"
-            onClick={handleSearch}
-          >
-            検索
-          </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {books.map((book: Book, index: number) => (
@@ -81,14 +77,12 @@ const Home: React.FC = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center h-full w-full bg-gray-200">
-                    <p className="text-gray-500 text-lg">No Image Available</p>
+                    <p className="text-gray-500 text-lg">No Image</p>
                   </div>
                 )}
               </div>
               <div className="px-6 py-4">
-                <div className="font-bold">
-                  {book.volumeInfo.title}
-                </div>
+                <div className="font-bold">{book.volumeInfo.title}</div>
               </div>
             </div>
           ))}
