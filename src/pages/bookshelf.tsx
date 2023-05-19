@@ -4,11 +4,10 @@ import { BookShelf } from '../components/BookShelf';
 import { useBooks } from "../hooks/useBooks";
 
 const sampleBooks = [
-  { id: '1', title: '嫌われる勇気', coverImage: '/images/cover1.jpg' },
-  { id: '2', title: '人を動かす', coverImage: '/images/cover2.jpg' },
-  { id: '3', title: '人を動かす', coverImage: '/images/cover2.jpg' },
-  { id: '4', title: '人を動かす', coverImage: '/images/cover2.jpg' },
-  { id: '5', title: '人を動かす', coverImage: '/images/cover2.jpg' },
+  { id: '1', title: 'リーダブルコード', coverImage: '/images/test.jpeg' },
+  { id: '2', title: 'リーダブルコード', coverImage: '/images/test.jpeg' },
+  { id: '3', title: 'リーダブルコード', coverImage: '/images/test.jpeg' },
+  { id: '4', title: 'リーダブルコード', coverImage: '/images/test.jpeg' },
 ];
 
 const BookShelfPage: React.FC = () => {
