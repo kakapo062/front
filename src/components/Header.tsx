@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white fixed w-full top-0 z-100 p-4">
+    <header className="bg-white fixed w-full top-0 z-50 p-4">
       <nav className="container mx-auto">
         <div className="flex justify-between items-center">
           <Link href="/">
